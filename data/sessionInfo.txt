@@ -1,0 +1,30 @@
+R version 4.5.2 (2025-10-31)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 26.04.1 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.12.1 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.12.1;  LAPACK version 3.12.0
+
+locale:
+ [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+ [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+ [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+[10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
+
+time zone: Europe/Paris
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] ape_5.8-1  TiPS_1.3.0
+
+loaded via a namespace (and not attached):
+ [1] digest_0.6.39    codetools_0.2-20 gtools_3.9.5     xfun_0.57       
+ [5] lattice_0.22-9   magrittr_2.0.5   glue_1.8.1       stringr_1.6.0   
+ [9] parallel_4.5.2   knitr_1.51       lifecycle_1.0.5  cli_3.6.6       
+[13] inline_0.3.21    vctrs_0.7.3      grid_4.5.2       compiler_4.5.2  
+[17] tools_4.5.2      nlme_3.1-168     evaluate_1.0.5   Rcpp_1.1.1-1    
+[21] otel_0.2.0       rlang_1.2.0      stringi_1.8.9   

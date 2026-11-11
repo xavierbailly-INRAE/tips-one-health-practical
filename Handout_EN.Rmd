@@ -1,0 +1,197 @@
+---
+title: "From transmission to genealogies"
+subtitle: "Live TiPS practical | Master One Health | 30-45 minutes"
+author: "UCBL / VetAgro Sup"
+date: "11 November 2026"
+fontsize: 10pt
+papersize: a4
+geometry: margin=18mm
+header-includes:
+  - \usepackage{fvextra}
+  - \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines=true,fontsize=\small}
+---
+
+## Before class: prepare the live-simulation environment
+
+**You will simulate the epidemics, trees and final mixing distributions yourself.** The precomputed dataset is an explicit rescue option only. All model and supporting code is supplied in this folder.
+
+Install R from [CRAN](https://cran.r-project.org/); RStudio is optional. Live simulation needs **ape**, **TiPS 1.3.0** and a working C++ compiler. Ask the instructor or IT support to prepare R development/build tools on Linux, matching Rtools on Windows, or Xcode Command Line Tools on macOS. Do this before the session, outside the 30-45 minutes.
+
+Unzip the complete student folder into a writable directory. In a terminal, change into it and run:
+
+```bash
+Rscript 00_install_packages.R
+Rscript check_setup.R
+```
+
+Or start R in the student folder and run:
+
+```r
+source("00_install_packages.R")
+source("check_setup.R")
+```
+
+The installer supplies missing packages and dependencies in a local library; its complete code is in **00_install_packages.R**. Internet is needed for downloads. The setup check compiles a tiny model and simulates one recovery. Wait for **READY** before class.
+
+## How to run the practical
+
+Open **TiPS_student.R** in a text editor and copy **one complete numbered block at a time** into the R console. In RStudio, open **TiPS_student.Rproj** and execute each block with Ctrl+Enter or Cmd+Enter. The snippets in this handout highlight the important calls; use the full blocks in the script.
+
+Without RStudio, you can also run the complete experiment from a terminal:
+
+```bash
+Rscript run_without_rstudio.R
+```
+
+This saves the figures in **student_plots.pdf** and a new directory under **runs**. `runs/latest_run.txt` identifies the last completed run. Do not rerun the whole simulation merely to inspect another tree: rerun the final two plotting lines of block 4 instead.
+
+## Time budget
+
+| Block | Work | Minutes |
+|---|---|---:|
+| 1 | Predict and set parameters | 5 |
+| 2 | Define and compile the model | 5 |
+| 3 | Simulate and inspect epidemics | 8 |
+| 4 | Simulate and inspect genealogies | 10 |
+| 5 | Compare your distributions and conclude | 10 |
+
+**Core route: 38 minutes.** For 30 minutes, shorten the model discussion, inspect two tree replicates, and give the conclusion orally. For 45 minutes, add a class discussion. The measured computation is about 25 seconds on the preparation Linux machine, excluding installation, plots and final export; classroom machines may differ.
+
+\newpage
+
+## 1. Predict and set parameters | 5 minutes
+
+**Does stronger transmission between two host species reduce host clustering in a genealogy?** This practical starts with a model and examines the patterns it produces. Unlike the sequence-based Biek and Pascall activities, its genealogies are known from simulation.
+
+Each species contains 1,000 individuals, who are susceptible ($S$), infected ($I$), or recovered ($R$). Initially there is one infected individual in host 1 and none in host 2. Recovery ends infectiousness; recovered individuals do not become susceptible again.
+
+Run block 1 with the default settings:
+
+```r
+use_precomputed <- FALSE
+N <- 1000L
+beta <- 0.2
+gamma <- 0.1
+q_values <- c(0.001, 0.1, 1)
+n_attempts <- 500L
+max_trees <- 30L
+seed_base <- 500000L
+```
+
+Within-species transmission has coefficient $\beta$; recovery has rate $\gamma$. Between-species transmission has coefficient $b=q\beta$ in both directions. **Predict** which scenario should show the strongest host clustering. If $q=0$, can host 2 become infected?
+
+Keep the supplied parameters for the core exercise. `seed_base` controls reproducible random draws. Changing it gives a different set of epidemics; changing $q$ changes the transmission model.
+
+## 2. Define and compile the mechanistic model | 5 minutes
+
+The six reaction strings are visible in block 2:
+
+```r
+reactions <- c(
+  "S1 [beta*S1*I1/N] -> I1", # within host 1
+  "S2 [beta*S2*I2/N] -> I2", # within host 2
+  "S2 [b*S2*I1/N] -> I2",    # host 1 infects host 2
+  "S1 [b*S1*I2/N] -> I1",    # host 2 infects host 1
+  "I1 [gamma*I1] -> 0",      # recovery of host 1
+  "I2 [gamma*I2] -> 0"       # recovery of host 2
+)
+simulator <- build_teaching_simulator(reactions)
+```
+
+A cross-species transmission infects a susceptible individual in the other host species; the donor does not move. Identify the reaction that first introduces infection into host 2.
+
+The supplied builder compiles the native TiPS simulator once. Its compatibility fix preserves traces of early extinction; it changes neither transmission rates nor biological events. You do not need to rewrite this function. Its complete implementation is in **simulation_functions.R**.
+
+\newpage
+
+## 3. Simulate and inspect independent epidemics | 8 minutes
+
+Run block 3. The main simulation call is:
+
+```r
+epidemics <- simulate_epidemics(
+  q_values, n_attempts, max_trees, seed_base)
+```
+
+This runs **500 attempts per scenario**, including early extinctions. An epidemic is eligible for tree analysis only if both hosts experience at least 200 infections and extinction occurs before day 600. Up to the first 30 eligible epidemics per scenario are retained; no tree has yet been examined.
+
+The figure shows the first three eligible epidemics per scenario. Blue denotes host 1; orange denotes host 2. Line styles identify replicates. Axis limits are shared. The printed counts give the number of eligible epidemics among all 500 attempts, not just the 30 retained.
+
+**Discuss.**
+
+1. Compare the timing and height of epidemic peaks. Does low coupling delay host 2 in every replicate?
+2. Why do epidemics differ despite identical model parameters?
+3. Why do these plotted curves not, by themselves, show how often two large epidemics emerge?
+
+All attempts and their seeds are saved before tree simulation. A technical failure is not silently replaced by another epidemic.
+
+## 4. Simulate and inspect genealogies | 10 minutes
+
+Run block 4. It generates one complete genealogy for each retained independent epidemic, samples 50 tips per host at recovery, and computes the mixing scores:
+
+```r
+genealogies <- simulate_genealogies(
+  epidemics$bank, q_values, seed_base)
+lesson <- assemble_lesson(epidemics, genealogies)
+```
+
+Now inspect the first tree of each scenario. **Rerun only these two lines**, changing the replicate to 2 and then 3:
+
+```r
+replicate_id <- 1L
+plot_genealogies(lesson, q_values, replicate_id, tip_size=1.15)
+```
+
+Blue circles identify host 1; orange squares identify host 2. Branch lengths are in days. Each tree has its own time axis relative to its latest sample. Only tips have host annotations; ancestral branch states are not displayed.
+
+**Discuss.** Are same-colour tips clustered or interspersed? Does your comparison survive across replicates? Why is a single striking tree insufficient evidence? A single introduction into host 2 need not imply reciprocal monophyly of both hosts.
+
+For a larger view of one tree:
+
+```r
+plot_genealogies(lesson, q_values=0.001,
+                 replicate_id=1L, tip_size=1.4)
+```
+
+\newpage
+
+## 5. Compare your distributions and conclude | 10 minutes
+
+The parsimony score $PS$ is the fewest host-state changes needed along the tree to explain its tip labels. We compare it with the mean score after 199 shuffles of those labels, keeping 50 tips per host:
+
+$$M=\frac{PS_{\mathrm{observed}}}{\operatorname{mean}(PS_{\mathrm{shuffled}})}.$$
+
+Low $M$ means strong host clustering relative to the shuffled reference. $M$ near 1 means a similar score to that reference. It is not a probability and can exceed 1; it is not the actual number of cross-species transmissions.
+
+Run block 5:
+
+```r
+q_final <- c(0.001, 0.1, 1)
+plot_mixing(lesson, q_final)
+lesson$summary[lesson$summary$q %in% q_final,
+               c("q", "n", "median_M", "p10_M", "p90_M")]
+```
+
+**In the normal route, these are the distributions you just simulated.** Every dot is a different epidemic and genealogy. Boxes show the median and interquartile range. `p10_M` and `p90_M` describe variation among replicates, not confidence limits on a fitted parameter. Check the displayed sample size: another seed can yield fewer than 30 eligible trees. The horizontal axis is categorical.
+
+**Write a three-sentence conclusion.**
+
+1. Complete: “In this model, increasing transmission between hosts ...” Support your statement with the figure or table.
+2. Explain what the replicate dots add to the evidence from one tree.
+3. Give two reasons why $M$ does not directly estimate $q$ from a real tree.
+
+Increasing $q$ also increases overall transmission potential; this is not a comparison at constant $R_0$. Sampling is balanced and occurs at recovery, but dates can differ between hosts. Results are conditional on sufficiently large epidemics. Real reconstructed trees add uncertainty absent here.
+
+## Rescue only: switch explicitly, then restart
+
+If compilation fails, computation is too slow for the session, or too few eligible epidemics are obtained, consult the instructor. Do not spend more than two minutes troubleshooting during class. Interrupt a slow run using Ctrl+C in the terminal or Esc in RStudio.
+
+In block 1, change `use_precomputed <- FALSE` to **`use_precomputed <- TRUE`** and rerun all blocks from the beginning. Alternatively:
+
+```bash
+Rscript run_without_rstudio.R --rescue
+```
+
+This route needs only **ape**. If necessary, prepare it with `Rscript 00_install_packages.R --rescue`. No TiPS compilation or simulation is performed. Figures and saved metadata explicitly say **PRECOMPUTED RESCUE**. The three scenarios are taken together from one validated dataset: live and cached results are never mixed automatically.
+
+If R itself is unavailable, open the supplied **figures** folder and CSV tables in **data**. These are labelled precomputed rescue outputs. The reference scores can differ from your own live run because they use different seeds.

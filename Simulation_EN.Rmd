@@ -1,0 +1,66 @@
+---
+title: "Simulation and rescue reference"
+subtitle: "Reference for the main practical"
+author: "UCBL / VetAgro Sup"
+date: "11 November 2026"
+fontsize: 10pt
+papersize: a4
+geometry: margin=18mm
+header-includes:
+  - \usepackage{fvextra}
+  - \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines=true,fontsize=\small}
+---
+
+## One main route
+
+**TiPS_student.R** is the main script. Its default is live simulation: 500 attempts per each of three q values, up to 30 trees per scenario, and 199 permutations per tree. The final distributions use those newly simulated trees. **TiPS_simulate.R** is retained only as an alias for the same main route; it no longer runs a separate small experiment.
+
+From the student directory, before class:
+
+```bash
+Rscript 00_install_packages.R
+Rscript check_setup.R
+```
+
+During class, execute numbered blocks of **TiPS_student.R** in R or RStudio. Without RStudio, the full run is:
+
+```bash
+Rscript run_without_rstudio.R
+```
+
+## What each supplied function does
+
+| Function | Role |
+|---|---|
+| `build_teaching_simulator()` | Compile the TiPS model once, retaining extinction traces. |
+| `one_trajectory()` | Simulate one epidemic with b=beta*q and validate its events. |
+| `simulate_epidemics()` | Count every attempt and retain the first eligible epidemics. |
+| `one_tree()` | Simulate a complete genealogy and sample 50 tips per host. |
+| `simulate_genealogies()` | Generate independent trees and their mixing statistics. |
+| `assemble_lesson()` | Assemble the new results for plotting and comparison. |
+
+All implementations are in **simulation_functions.R**. Plotting code is in **helpers.R**. Students need not implement these functions; the parameters and six biological reactions remain visible in the main script.
+
+\newpage
+
+## Outputs and provenance
+
+Every run gets its own directory under **runs**. Live runs save all attempted epidemics, retained trajectories, sampled genealogies, scores, a reusable `lesson.rds`, parameters, seed, software versions and stage timings. The headless runner also saves `student_plots.pdf` there. `runs/latest_run.txt` points to the last completed run, not an interrupted attempt.
+
+Data source is printed in the console, displayed on plots and saved in `DATA_SOURCE.txt` and `settings.rds`. Using the same seeds with the validated software reproduces the random realisations. Changing seeds can change acceptance counts, the number of retained trees and their scores.
+
+## Explicit rescue
+
+Set `use_precomputed <- TRUE` in block 1 and restart all blocks, or run:
+
+```bash
+Rscript run_without_rstudio.R --rescue
+```
+
+The rescue path loads `data/lesson.rds`, skips both simulation stages, and labels the entire analysis **PRECOMPUTED RESCUE**. It requires ape but not TiPS. If a live run fails, no cached values are substituted automatically. Do not combine live scores from one scenario with rescued scores from another.
+
+The supplied `figures` directory is an offline rescue, not evidence that a student's own run succeeded. If parameters have been edited, restore the supplied defaults before using the rescue dataset.
+
+## Computing time versus classroom time
+
+The measured preparation-machine workload was approximately 25 seconds for compilation, 1,500 epidemic attempts, 90 genealogies and their scores. Installation, figure rendering and final export were excluded. The 38-minute teaching plan reserves time for predictions, observation, repeated trees and interpretation. Prepare TiPS 1.3.0 and the C++ toolchain before the session; test the exact classroom image.

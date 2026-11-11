@@ -1,0 +1,91 @@
+---
+title: "Before class: Windows and Mac setup"
+subtitle: "TiPS practical | Student installation guide"
+fontsize: 11pt
+papersize: a4
+geometry: margin=20mm
+---
+
+## 1. Prepare your computer a few days before class
+
+The live practical needs **R, ape, TiPS 1.3.0 and C++ build tools**. RStudio is optional and does not supply the compiler. Installing the R packages alone is not sufficient: TiPS compiles your model when you run it. Installation is outside the 30-45 minute practical.
+
+Install R from [CRAN](https://cran.r-project.org/). On a Mac, choose the installer for your processor (Apple silicon or Intel). Unzip the **whole student archive** into a folder you can write to. Keep all files and subfolders together.
+
+## 2. Install the build tools for your system
+
+**Windows**
+
+1. In the **R console**, type `R.version.string` to see your R version.
+2. Open the [official Rtools page](https://cran.r-project.org/bin/windows/Rtools/) and select the Rtools version listed for your R version and machine architecture. Use its installer and the standard installation location.
+3. Close all R and RStudio windows, then reopen R/RStudio. Do not edit PATH manually as a first troubleshooting step.
+
+**macOS**
+
+1. Open **Terminal** from Applications > Utilities. This is not the R console.
+2. Run the command below and complete the Apple installation dialog:
+
+```bash
+xcode-select --install
+```
+
+3. Restart R/RStudio after installation. The Command Line Tools provide the C/C++ compiler; the full Xcode application is not required for this TP. If macOS says they are already installed, continue to the actual check on page 2.
+
+If installation of an R dependency from source reports a missing **gfortran**, ask the instructor or IT for the Fortran version compatible with your R release. Do not install a random compiler. See the [official R for Mac tools page](https://mac.r-project.org/tools/).
+
+**Managed or borrowed computer:** if installation is blocked or requires administrator credentials you do not have, contact IT before class. The supplied scripts do not install system build tools automatically.
+
+## 3. Open the student folder in R
+
+In RStudio, open **TiPS_student.Rproj**. In plain R, set the working directory to the unzipped student folder, using your own path, for example:
+
+```r
+setwd("C:/Users/yourname/Documents/TP_TiPS_ETUDIANTS") # Windows
+# Mac example: setwd("/Users/yourname/Documents/TP_TiPS_ETUDIANTS")
+file.exists("check_setup.R")  # Must return TRUE
+```
+
+\newpage
+
+## 4. Install packages, then test actual compilation
+
+Run these commands **in the R console**, in this order:
+
+```r
+source("00_install_packages.R")
+source("check_setup.R")
+```
+
+The first script installs missing packages and dependencies in the local `.R-library` folder. Internet access is needed for downloads. If asked to compile a newer package from source when a binary is available, use the binary for classroom preparation.
+
+The second script compiles a tiny TiPS model, runs one recovery event and checks its output. It does not run the whole TP. Your computer is ready only when you see:
+
+```text
+READY: TiPS 1.3.0 compiled, simulated an event and retained its trace.
+```
+
+## If the check fails
+
+- **Missing packages:** rerun the installation script; keep its error message if installation fails.
+- **Wrong TiPS version:** this teaching wrapper requires **1.3.0**. Ask the instructor to help install the tested version; a newer version is not automatically compatible.
+- **C++ compilation:** follow the Windows or Mac advice printed by the check. Restart R after installing build tools and rerun the check. A compilation failure can also be a configuration or dependency problem, not just an absent compiler.
+- **Mac tools already installed:** in Terminal run `xcode-select -p`. If this fails or compilation still fails, send the error to the instructor/IT; do not change system paths at random.
+- **Simulation/output failure:** compilation worked, but the native test failed. Send the error to the instructor.
+
+Keep the **full console error** and **setup_diagnostics.txt**, if created. The file records the failed stage, original R error and software versions; compiler details may appear only in the console. Send both to the instructor before class.
+
+## During class: start the practical or use explicit rescue
+
+After READY, open **TiPS_student.R** and execute its five numbered blocks in order. Keep `use_precomputed <- FALSE` for live simulations.
+
+If setup is still blocked, spend no more than two minutes troubleshooting during the session. For rescue, install/load **ape** if needed:
+
+```r
+install.packages("ape", repos="https://cloud.r-project.org")
+```
+
+In block 1 of **TiPS_student.R**, change `use_precomputed <- FALSE` to **`use_precomputed <- TRUE`**, then execute all blocks from the beginning. This uses the supplied results and needs neither TiPS nor a compiler. Figures are labelled **PRECOMPUTED RESCUE**. If R cannot run, use the supplied **figures** and **data** folders.
+
+**Terminal alternative (from the student folder):** `Rscript run_without_rstudio.R` for live simulation; add `--rescue` to use the supplied results.
+
+*Setup has been executed on Linux. Windows/Mac installation guidance follows the official sources linked above; the full TP still needs a trial on those classroom systems.*

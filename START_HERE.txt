@@ -1,0 +1,29 @@
+FROM TRANSMISSION TO GENEALOGIES - LIVE MAIN ROUTE, 30-45 MINUTES
+
+Read Installation_EN.pdf first for Windows/Mac installation and troubleshooting.
+
+BEFORE CLASS (from the unzipped student folder):
+  Rscript 00_install_packages.R
+  Rscript check_setup.R
+Install R and a C++ toolchain in advance. RStudio is optional.
+Setup checks ape, TiPS 1.3.0, compilation and native trace output.
+
+DURING CLASS:
+Read TiPS_student_EN.pdf and execute TiPS_student.R one numbered block at a time
+in the R console or RStudio. The normal use_precomputed=FALSE route simulates
+1500 attempts, retains up to 30 trees for each of q=0.001,0.1,1, and compares
+THE NEW LIVE RESULTS in the final phase. Approximate core teaching time: 38 min.
+Terminal: Rscript run_without_rstudio.R
+Open student_plots.pdf. Completed results are saved in runs; latest_run.txt
+points to the most recent completed run.
+
+RESCUE ONLY:
+Change use_precomputed to TRUE in block 1 and restart all blocks, or run:
+  Rscript run_without_rstudio.R --rescue
+Rescue needs only ape (install with Rscript 00_install_packages.R --rescue).
+Figures, console and saved metadata explicitly identify PRECOMPUTED RESCUE.
+Nothing switches silently and live/cached scenarios are not mixed.
+If R cannot run, use the supplied figures folder and CSV files in data.
+
+All simulation code is supplied in simulation_functions.R; see Simulation_EN.pdf.
+TiPS_simulate.R is now just an alias for the main route, not an optional short TP.

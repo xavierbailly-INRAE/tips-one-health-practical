@@ -1,0 +1,17 @@
+# Machine-specific dependencies, state and newly generated results
+.R-library/
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+runs/
+live_results/
+student_plots.pdf
+setup_diagnostics.txt
+Rplots.pdf
+*.o
+*.so
+*.dll
+*.dylib
+.DS_Store
+Thumbs.db
