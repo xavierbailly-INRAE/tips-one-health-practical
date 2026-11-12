@@ -12,7 +12,7 @@ Download and extract the ZIP below, then double-click **[TiPS_offline_EN.html](T
 
 **[Download the complete student ZIP](https://github.com/xavierbailly-INRAE/tips-one-health-practical/archive/refs/heads/main.zip)**
 
-The five steps follow the 38-minute practical. Compare three tree replicates, enlarge figures, write notes and use **Download notes (.txt)** before closing. Notes may persist in this browser; downloaded notes are your portable copy. Print / save PDF includes all five steps and your answers.
+The five steps follow the 38-minute practical: first understand the two-host SIR model, then explore q and make predictions, before inspecting epidemics, genealogies and mixing scores. The coefficient selector illustrates b = qβ; it does not change the prepared results. Compare three tree replicates, enlarge figures, write notes and use **Download notes (.txt)** before closing. Notes may persist in this browser; downloaded notes are your portable copy. Print / save PDF includes all five steps and your answers.
 
 Choose **Browser only** when R is unavailable, or **Alongside R** to use the page as a guide while running the existing R script. Every figure in the browser remains a **PRECOMPUTED REFERENCE**. No simulation runs in the browser, and live R results are not imported. Exact results may differ because the live and reference runs use different seeds.
 
