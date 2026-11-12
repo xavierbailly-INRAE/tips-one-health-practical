@@ -2,6 +2,16 @@
 
 A 30-45 minute practical for Master's students in One Health. Run R code in five blocks to simulate epidemics in two host species, generate genealogies and compare host mixing for three transmission scenarios. No functions need to be written by students.
 
+## Browser practical — ready for class
+
+Download and extract the ZIP below, then double-click **[TiPS_offline_EN.html](TiPS_offline_EN.html)**. On GitHub this link shows the file source; it does not run the page. Open the downloaded file in Chrome, Edge, Firefox or Safari. The HTML is self-contained and can also be distributed on its own (about 1.1 MB).
+
+**[Download the complete student ZIP](https://github.com/xavierbailly-INRAE/tips-one-health-practical/archive/refs/heads/main.zip)**
+
+The five steps follow the 38-minute practical. Compare three tree replicates, enlarge figures, write notes and use **Download notes (.txt)** before closing. Notes may persist in this browser; downloaded notes are your portable copy. Print / save PDF includes all five steps and your answers.
+
+Choose **Browser only** when R is unavailable, or **Alongside R** to use the page as a guide while running the existing R script. Every figure in the browser remains a **PRECOMPUTED REFERENCE**. No simulation runs in the browser, and live R results are not imported. Exact results may differ because the live and reference runs use different seeds.
+
 ## Download the complete folder
 
 On GitHub, choose **Code > Download ZIP**, then extract the whole archive into a writable folder. Keep `data/` and `figures/` with the scripts. Do not download the R script alone. The extracted folder's name may vary; use that folder as your working directory.
@@ -44,6 +54,7 @@ Rescue plots are labelled **PRECOMPUTED RESCUE**. The supplied `figures/` and `d
 
 ## Contents and reproducibility
 
+- `TiPS_offline_EN.html`: standalone five-step browser practical with reference figures and note export.
 - `TiPS_student_EN.pdf`: student handout, four pages.
 - `Installation_EN.pdf`: Windows/Mac installation, two pages.
 - `Simulation_EN.pdf`: functions, outputs and rescue reference.

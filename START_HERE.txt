@@ -1,3 +1,13 @@
+BROWSER COMPANION — 12 NOVEMBER 2026
+
+Double-click TiPS_offline_EN.html after extracting the ZIP.
+No installation or internet needed for the browser-only route.
+Five steps, three tree replicates, figure zoom, local notes and text export.
+Download notes before closing. Print / save PDF includes all steps and answers.
+All browser figures remain PRECOMPUTED REFERENCE, also in Alongside R mode.
+For newly simulated results, use the R route below and inspect its outputs in R.
+GitHub displays HTML source; download the ZIP and open the file locally.
+
 FROM TRANSMISSION TO GENEALOGIES - LIVE MAIN ROUTE, 30-45 MINUTES
 
 Read Installation_EN.pdf first for Windows/Mac installation and troubleshooting.
@@ -23,7 +33,7 @@ Change use_precomputed to TRUE in block 1 and restart all blocks, or run:
 Rescue needs only ape (install with Rscript 00_install_packages.R --rescue).
 Figures, console and saved metadata explicitly identify PRECOMPUTED RESCUE.
 Nothing switches silently and live/cached scenarios are not mixed.
-If R cannot run, use the supplied figures folder and CSV files in data.
+If R cannot run, open TiPS_offline_EN.html. Figures and CSV files remain available.
 
 All simulation code is supplied in simulation_functions.R; see Simulation_EN.pdf.
 TiPS_simulate.R is now just an alias for the main route, not an optional short TP.
