@@ -4,6 +4,10 @@ A 30-45 minute practical for Master's students in One Health. Run R code in five
 
 ## Browser practical — ready for class
 
+**[Open the practical directly in your browser](https://xavierbailly-inrae.github.io/tips-one-health-practical/)** — no account, installation or ZIP download needed. The online page uses the same precomputed reference as the offline file. Download your notes before leaving.
+
+For offline use:
+
 Download and extract the ZIP below, then double-click **[TiPS_offline_EN.html](TiPS_offline_EN.html)**. On GitHub this link shows the file source; it does not run the page. Open the downloaded file in Chrome, Edge, Firefox or Safari. The HTML is self-contained and can also be distributed on its own (about 1.1 MB).
 
 **[Download the complete student ZIP](https://github.com/xavierbailly-INRAE/tips-one-health-practical/archive/refs/heads/main.zip)**

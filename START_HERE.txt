@@ -1,6 +1,9 @@
 BROWSER COMPANION — 12 NOVEMBER 2026
 
-Double-click TiPS_offline_EN.html after extracting the ZIP.
+Open directly online (no ZIP required):
+https://xavierbailly-inrae.github.io/tips-one-health-practical/
+
+For offline use, double-click TiPS_offline_EN.html after extracting the ZIP.
 No installation or internet needed for the browser-only route.
 Five steps, three tree replicates, figure zoom, local notes and text export.
 Download notes before closing. Print / save PDF includes all steps and answers.
